@@ -1,12 +1,31 @@
 package com.edgardjr.cursosb;
 
+import java.util.Arrays;
+
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.CommandLineRunner;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 
+import com.edgardjr.cursosb.domain.Categoria;
+import com.edgardjr.cursosb.repostories.CategoriaRepository;
+
 @SpringBootApplication
-public class CursosbApplication {
+public class CursosbApplication implements CommandLineRunner {
+	
+	@Autowired
+	private CategoriaRepository categoriaRepository;
 
 	public static void main(String[] args) {
 		SpringApplication.run(CursosbApplication.class, args);
+	}
+
+	@Override
+	public void run(String... args) throws Exception {
+		Categoria categoria1 = new Categoria(null, "Informática");
+		Categoria categoria2 = new Categoria(null, "Escritórios");
+		
+		this.categoriaRepository.saveAll(Arrays.asList(categoria1, categoria2));
+		
 	}
 }
