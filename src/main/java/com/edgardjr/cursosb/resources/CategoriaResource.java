@@ -9,7 +9,6 @@ import org.springframework.web.bind.annotation.RestController;
 
 import com.edgardjr.cursosb.domain.Categoria;
 import com.edgardjr.cursosb.services.CategoriaService;
-import com.edgardjr.cursosb.services.exceptions.ObjectNotFoundException;
 
 @RestController
 @RequestMapping(value="/categorias")
@@ -19,7 +18,7 @@ public class CategoriaResource {
 	private CategoriaService categoriaService;
 	
 	@RequestMapping(value="/{id}", method=RequestMethod.GET)
-	public ResponseEntity<?> getById(@PathVariable Integer id) throws ObjectNotFoundException {
+	public ResponseEntity<?> getById(@PathVariable Integer id) {
 		Categoria cateogira = this.categoriaService.getById(id);
 		
 		return ResponseEntity.ok().body(cateogira);

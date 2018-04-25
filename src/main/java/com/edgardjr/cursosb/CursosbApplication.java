@@ -90,5 +90,6 @@ public class CursosbApplication implements CommandLineRunner {
 		
 		this.clienteRepository.save(cliente1);
 		this.enderecoRepository.saveAll(Arrays.asList(endereco1, endereco2));
+		
 	}
 }

@@ -1,5 +1,7 @@
 package com.edgardjr.cursosb.domain.enums;
 
+import java.util.Arrays;
+
 public enum TipoCliente {
 	PESSOA_FISICA(1, "Pessoa Física"),
 	PESSOA_JURIDICA(2, "Pessoa Jurídica");
@@ -25,13 +27,9 @@ public enum TipoCliente {
 			return null;
 		}
 		
-		for (TipoCliente tipoCliente : TipoCliente.values()) {
-			if (cod.equals(tipoCliente.getCod())) {
-				return tipoCliente;
-			}
-		}
-		
-		throw new IllegalArgumentException("Id inválido: " + cod);
+		return Arrays.stream(TipoCliente.values())
+			.filter(t -> cod.equals(t.cod)).findAny()
+			.orElseThrow(() -> new IllegalArgumentException("Id inválido: " + cod));
 	}
 	
 }
