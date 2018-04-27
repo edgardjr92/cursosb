@@ -13,6 +13,7 @@ import com.edgardjr.cursosb.domain.Cidade;
 import com.edgardjr.cursosb.domain.Cliente;
 import com.edgardjr.cursosb.domain.Endereco;
 import com.edgardjr.cursosb.domain.Estado;
+import com.edgardjr.cursosb.domain.ItemPedido;
 import com.edgardjr.cursosb.domain.Pagamento;
 import com.edgardjr.cursosb.domain.PagamentoBoleto;
 import com.edgardjr.cursosb.domain.PagamentoCartao;
@@ -25,6 +26,7 @@ import com.edgardjr.cursosb.repostories.CidadeRepository;
 import com.edgardjr.cursosb.repostories.ClienteRepository;
 import com.edgardjr.cursosb.repostories.EnderecoRepository;
 import com.edgardjr.cursosb.repostories.EstadoRepository;
+import com.edgardjr.cursosb.repostories.ItemPedidoRepository;
 import com.edgardjr.cursosb.repostories.PagamentoRepository;
 import com.edgardjr.cursosb.repostories.PedidoRepository;
 import com.edgardjr.cursosb.repostories.ProdutoRepository;
@@ -55,6 +57,9 @@ public class CursosbApplication implements CommandLineRunner {
 	
 	@Autowired
 	private PagamentoRepository pagamentoRepository;
+	
+	@Autowired
+	private ItemPedidoRepository ItemPedidoRepository;
 
 	public static void main(String[] args) {
 		SpringApplication.run(CursosbApplication.class, args);
@@ -121,5 +126,17 @@ public class CursosbApplication implements CommandLineRunner {
 		this.pedidoRepository.saveAll(Arrays.asList(pedido1, pedido2));
 		this.pagamentoRepository.saveAll(Arrays.asList(pagamento1, pagamento2));
 		
+		ItemPedido item1 = new ItemPedido(pedido1, produto1, 0.00, 1, 2000.00);
+		ItemPedido item2 = new ItemPedido(pedido1, produto3, 0.00, 2, 80.00);
+		ItemPedido item3 = new ItemPedido(pedido2, produto2, 100.00, 1, 800.00);
+		
+		pedido1.getItens().addAll(Arrays.asList(item1, item2));
+		pedido2.getItens().add(item3);
+		
+		produto1.getItens().add(item1);
+		produto2.getItens().add(item3);
+		produto3.getItens().add(item2);
+		
+		this.ItemPedidoRepository.saveAll(Arrays.asList(item1, item2, item3));
 	}
 }
