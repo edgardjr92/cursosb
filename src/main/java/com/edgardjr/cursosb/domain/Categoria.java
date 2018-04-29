@@ -10,6 +10,8 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.ManyToMany;
 
+import com.edgardjr.cursosb.dto.CategoriaDTO;
+
 @Entity
 public class Categoria implements Serializable {
 	
@@ -29,6 +31,11 @@ public class Categoria implements Serializable {
 		super();
 		this.id = id;
 		this.nome = nome;
+	}
+	
+	public Categoria(CategoriaDTO categoriaDTO) {
+		this.id = categoriaDTO.getId();
+		this.nome = categoriaDTO.getNome();
 	}
 
 	public Integer getId() {
