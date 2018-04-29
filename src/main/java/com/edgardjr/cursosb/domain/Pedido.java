@@ -20,7 +20,7 @@ import javax.persistence.TemporalType;
 import com.fasterxml.jackson.annotation.JsonFormat;
 
 @Entity
-public class Pedido implements Serializable {
+public class Pedido implements Serializable, GenericDomain<Integer> {
 
 	private static final long serialVersionUID = 1L;
 

@@ -13,7 +13,7 @@ import javax.persistence.ManyToMany;
 import com.edgardjr.cursosb.dto.CategoriaDTO;
 
 @Entity
-public class Categoria implements Serializable {
+public class Categoria implements Serializable, GenericDomain<Integer> {
 	
 	private static final long serialVersionUID = 1L;
 	

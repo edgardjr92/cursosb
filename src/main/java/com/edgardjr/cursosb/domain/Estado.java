@@ -13,7 +13,7 @@ import javax.persistence.OneToMany;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 
 @Entity
-public class Estado implements Serializable {
+public class Estado implements Serializable, GenericDomain<Integer> {
 	
 	private static final long serialVersionUID = 1L;
 	

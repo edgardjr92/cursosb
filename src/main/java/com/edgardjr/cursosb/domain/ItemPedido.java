@@ -8,7 +8,7 @@ import javax.persistence.Entity;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 
 @Entity
-public class ItemPedido implements Serializable {
+public class ItemPedido implements Serializable, GenericDomain<ItemPedidoPK> {
 	
 	private static final long serialVersionUID = 1L;
 	

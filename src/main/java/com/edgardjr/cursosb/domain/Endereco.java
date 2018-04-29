@@ -12,7 +12,7 @@ import javax.persistence.ManyToOne;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 
 @Entity
-public class Endereco implements Serializable {
+public class Endereco implements Serializable, GenericDomain<Integer> {
 
 	private static final long serialVersionUID = 1L; 
 	

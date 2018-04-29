@@ -18,7 +18,7 @@ import com.edgardjr.cursosb.domain.enums.TipoCliente;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 
 @Entity
-public class Cliente implements Serializable {
+public class Cliente implements Serializable, GenericDomain<Integer> {
 
 	private static final long serialVersionUID = 1L; 
 	

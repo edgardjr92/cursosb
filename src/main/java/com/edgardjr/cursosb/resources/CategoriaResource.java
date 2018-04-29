@@ -37,7 +37,7 @@ public class CategoriaResource {
 	
 	@RequestMapping(method=RequestMethod.POST)
 	public ResponseEntity<Void> insert(@Valid @RequestBody CategoriaDTO categoriaDTO) {
-		Categoria categoria = this.categoriaService.insert(new Categoria(categoriaDTO));
+		Categoria categoria = this.categoriaService.save(new Categoria(categoriaDTO));
 		URI uri = ServletUriComponentsBuilder.fromCurrentRequest()
 					.path("/{id}").buildAndExpand(categoria.getId()).toUri();
 		
@@ -47,7 +47,7 @@ public class CategoriaResource {
 	@RequestMapping(value="/{id}", method=RequestMethod.PUT)
 	public ResponseEntity<Void> update(@Valid @RequestBody CategoriaDTO categoriaDTO, @PathVariable Integer id){
 		categoriaDTO.setId(id);
-		this.categoriaService.update(new Categoria(categoriaDTO));
+		this.categoriaService.save(new Categoria(categoriaDTO));
 		return ResponseEntity.noContent().build();
 	}
 
@@ -73,7 +73,7 @@ public class CategoriaResource {
 			@RequestParam(value="order", defaultValue="nome") String order, 
 			@RequestParam(value="direction", defaultValue="ASC") String direction) {
 		
-		Page<CategoriaDTO> categorias = this.categoriaService.getPage(page, size, order, direction)
+		Page<CategoriaDTO> categorias = this.categoriaService.getAll(page, size, order, direction)
 				.map(c -> new CategoriaDTO(c));
 		
 		return ResponseEntity.ok().body(categorias);

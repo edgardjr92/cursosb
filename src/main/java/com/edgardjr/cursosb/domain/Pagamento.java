@@ -15,7 +15,7 @@ import com.fasterxml.jackson.annotation.JsonIgnore;
 
 @Entity
 @Inheritance(strategy = InheritanceType.JOINED)
-public abstract class Pagamento implements Serializable{
+public abstract class Pagamento implements Serializable, GenericDomain<Integer> {
 	
 	private static final long serialVersionUID = 1L;
 	
