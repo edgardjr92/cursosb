@@ -15,6 +15,7 @@ import javax.persistence.Id;
 import javax.persistence.OneToMany;
 
 import com.edgardjr.cursosb.domain.enums.TipoCliente;
+import com.edgardjr.cursosb.dto.ClienteDTO;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 
 @Entity
@@ -42,6 +43,12 @@ public class Cliente implements Serializable, GenericDomain<Integer> {
 	private List<Pedido> pedidos = new ArrayList<>();
 	
 	public Cliente() {	
+	}
+	
+	public Cliente(ClienteDTO clienteDTO) {
+		this.id = clienteDTO.getId();
+		this.nome = clienteDTO.getNome();
+		this.email = clienteDTO.getEmail();
 	}
 
 	public Cliente(Integer id, String nome, String email, String cpfOuCnpj, TipoCliente tipo) {

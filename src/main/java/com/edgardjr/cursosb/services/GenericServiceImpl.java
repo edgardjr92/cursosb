@@ -1,5 +1,6 @@
 package com.edgardjr.cursosb.services;
 
+import java.lang.reflect.Field;
 import java.util.List;
 import java.util.Optional;
 
@@ -13,6 +14,7 @@ import org.springframework.stereotype.Service;
 
 import com.edgardjr.cursosb.domain.GenericDomain;
 import com.edgardjr.cursosb.services.exceptions.DataIntegrityException;
+import com.edgardjr.cursosb.services.exceptions.InternalServerError;
 import com.edgardjr.cursosb.services.exceptions.ObjectNotFoundException;
 
 @Service
@@ -34,8 +36,13 @@ public abstract class GenericServiceImpl<E extends GenericDomain<ID>, ID, R> imp
 	}
 	
 	public E save (E entity) {
-		if (entity.getId() != null)
-			entity = this.getById(entity.getId());
+		if (entity.getId() != null) {
+			try {
+				entity = this.merge(entity, this.getById(entity.getId()));
+			} catch (Exception e) {
+				throw new InternalServerError("Ocorreu um inesperado ao atualizar. Tente novamente!");
+			}
+		}
 		return this.repository.save(entity);
 	}
 	
@@ -55,5 +62,24 @@ public abstract class GenericServiceImpl<E extends GenericDomain<ID>, ID, R> imp
 		} catch (DataIntegrityViolationException e) {
 			throw new DataIntegrityException("Não é possível remover entidade com associação.");
 		}
-	}	
+	}
+	
+	private E merge(E source, E target) throws IllegalArgumentException, IllegalAccessException {
+		for (Field fieldSource : source.getClass().getDeclaredFields()) {
+			if (!fieldSource.getName().equals("serialVersionUID")) {
+				fieldSource.setAccessible(true);
+				Object value = fieldSource.get(source);
+				if (value != null) {
+					for (Field fieldTarget : target.getClass().getDeclaredFields()) {
+						if (fieldSource.getName().equals(fieldTarget.getName())) {
+							fieldTarget.setAccessible(true);
+							fieldTarget.set(target, value);
+							break;
+						}
+					}
+				}
+			}
+		}
+		return target;
+	}
 }

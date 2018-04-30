@@ -9,6 +9,7 @@ import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 
 import com.edgardjr.cursosb.services.exceptions.DataIntegrityException;
+import com.edgardjr.cursosb.services.exceptions.InternalServerError;
 import com.edgardjr.cursosb.services.exceptions.ObjectNotFoundException;
 
 
@@ -27,6 +28,13 @@ public class ResourceExceptionHandler {
 		DefaultError error = new DefaultError(HttpStatus.BAD_REQUEST.value(), e.getMessage(), System.currentTimeMillis());
 		
 		return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(error);
+	}
+	
+	@ExceptionHandler(InternalServerError.class)
+	public ResponseEntity<DefaultError> internalServerError(InternalServerError e, HttpServletRequest request) {
+		DefaultError error = new DefaultError(HttpStatus.INTERNAL_SERVER_ERROR.value(), e.getMessage(), System.currentTimeMillis());
+		
+		return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(error);
 	}
 	
 	@ExceptionHandler(MethodArgumentNotValidException.class)
