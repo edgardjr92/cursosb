@@ -4,6 +4,8 @@ import java.lang.reflect.Field;
 import java.util.List;
 import java.util.Optional;
 
+import javax.transaction.Transactional;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.data.domain.Page;
@@ -35,6 +37,7 @@ public abstract class GenericServiceImpl<E extends GenericDomain<ID>, ID, R> imp
 				"Objeto não encontrado! Id: " + id + ", Tipo: " + this.entityClass.getSimpleName()));
 	}
 	
+	@Transactional
 	public E save (E entity) {
 		if (entity.getId() != null) {
 			try {
