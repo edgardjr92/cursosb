@@ -32,7 +32,7 @@ public class Endereco implements Serializable, GenericDomain<Integer> {
 	
 	@ManyToOne
 	@JoinColumn(name="cidade_id")
-	private Cidade cidaade;
+	private Cidade cidade;
 	
 	public Endereco() {
 	}
@@ -47,7 +47,7 @@ public class Endereco implements Serializable, GenericDomain<Integer> {
 		this.bairro = bairro;
 		this.cep = cep;
 		this.cliente = cliente;
-		this.cidaade = cidade;
+		this.cidade = cidade;
 	}
 
 	public Integer getId() {
@@ -106,12 +106,12 @@ public class Endereco implements Serializable, GenericDomain<Integer> {
 		this.cliente = cliente;
 	}
 
-	public Cidade getCidaade() {
-		return cidaade;
+	public Cidade getCidade() {
+		return cidade;
 	}
 
-	public void setCidaade(Cidade cidaade) {
-		this.cidaade = cidaade;
+	public void setCidaade(Cidade cidade) {
+		this.cidade = cidade;
 	}
 
 	@Override

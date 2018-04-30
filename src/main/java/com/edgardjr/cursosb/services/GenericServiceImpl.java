@@ -64,7 +64,7 @@ public abstract class GenericServiceImpl<E extends GenericDomain<ID>, ID, R> imp
 		}
 	}
 	
-	private E merge(E source, E target) throws IllegalArgumentException, IllegalAccessException {
+	private E merge(E source, E target) throws IllegalArgumentException, IllegalAccessException {		
 		for (Field fieldSource : source.getClass().getDeclaredFields()) {
 			if (!fieldSource.getName().equals("serialVersionUID")) {
 				fieldSource.setAccessible(true);

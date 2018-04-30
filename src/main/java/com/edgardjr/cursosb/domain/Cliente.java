@@ -14,8 +14,11 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.OneToMany;
 
+import org.h2.util.StringUtils;
+
 import com.edgardjr.cursosb.domain.enums.TipoCliente;
 import com.edgardjr.cursosb.dto.ClienteDTO;
+import com.edgardjr.cursosb.dto.ClienteNewDTO;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 
 @Entity
@@ -35,7 +38,7 @@ public class Cliente implements Serializable, GenericDomain<Integer> {
 	private List<Endereco> enderecos = new ArrayList<>();
 	
 	@ElementCollection
-	@CollectionTable(name="TELEFONE")
+	@CollectionTable(name="telefone")
 	private Set<String> telefones = new HashSet<>();
 	
 	@JsonIgnore
@@ -49,6 +52,28 @@ public class Cliente implements Serializable, GenericDomain<Integer> {
 		this.id = clienteDTO.getId();
 		this.nome = clienteDTO.getNome();
 		this.email = clienteDTO.getEmail();
+	}
+	
+	public Cliente(ClienteNewDTO clienteNewDTO) {
+		this.nome = clienteNewDTO.getNome();
+		this.email = clienteNewDTO.getEmail();
+		this.cpfOuCnpj = clienteNewDTO.getCpfOuCnpj();
+		this.tipo = clienteNewDTO.getTipo();
+		
+		Endereco endereco = new Endereco(null, clienteNewDTO.getLogradouro(), clienteNewDTO.getNumero(), 
+				clienteNewDTO.getComplemento(), clienteNewDTO.getBairro(), clienteNewDTO.getCep(), 
+				this, new Cidade(clienteNewDTO.getCidadeId(), null, null));
+		
+		this.getEnderecos().add(endereco);
+		this.getTelefones().add(clienteNewDTO.getTelefone1());
+		
+		if (!StringUtils.isNullOrEmpty(clienteNewDTO.getTelefone2())) {
+			this.getTelefones().add(clienteNewDTO.getTelefone2());
+		}
+		
+		if (!StringUtils.isNullOrEmpty(clienteNewDTO.getTelefone3())) {
+			this.getTelefones().add(clienteNewDTO.getTelefone3());
+		}
 	}
 
 	public Cliente(Integer id, String nome, String email, String cpfOuCnpj, TipoCliente tipo) {
