@@ -85,4 +85,8 @@ public abstract class GenericServiceImpl<E extends GenericDomain<ID>, ID, R> imp
 		}
 		return target;
 	}
+
+	public JpaRepository<E, ID> getRepository() {
+		return repository;
+	}
 }
