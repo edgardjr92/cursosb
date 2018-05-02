@@ -2,41 +2,44 @@ package com.edgardjr.cursosb.services.validation;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
 
+import javax.servlet.http.HttpServletRequest;
 import javax.validation.ConstraintValidator;
 import javax.validation.ConstraintValidatorContext;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.web.servlet.HandlerMapping;
 
 import com.edgardjr.cursosb.domain.Cliente;
-import com.edgardjr.cursosb.domain.enums.TipoCliente;
-import com.edgardjr.cursosb.dto.ClienteNewDTO;
+import com.edgardjr.cursosb.dto.ClienteDTO;
 import com.edgardjr.cursosb.repostories.ClienteRepository;
 import com.edgardjr.cursosb.resources.exceptions.FieldMessage;
-import com.edgardjr.cursosb.services.validation.utils.BR;
 
-public class ClienteInsertValidator implements ConstraintValidator<ClienteInsert, ClienteNewDTO> {
-
+public class ClienteUpdateValidator implements ConstraintValidator<ClienteUpdate, ClienteDTO> {
+	
+	@Autowired
+	private HttpServletRequest request;
+	
 	@Autowired
 	private ClienteRepository clienteRepository;
 	
 	@Override
-	public void initialize(ClienteInsert ann) {
+	public void initialize(ClienteUpdate ann) {
 	}
 
 	@Override
-	public boolean isValid(ClienteNewDTO objDto, ConstraintValidatorContext context) {
-		List<FieldMessage> errors = new ArrayList<>();
+	public boolean isValid(ClienteDTO objDto, ConstraintValidatorContext context) {
 		
-		if (objDto.getTipo().equals(TipoCliente.PESSOA_FISICA.getCod()) && !BR.isValidCPF(objDto.getCpfOuCnpj())) {
-			errors.add(new FieldMessage("cpfOuCnpj", "CPF inválido"));
-		} else if (objDto.getTipo().equals(TipoCliente.PESSOA_JURIDICA.getCod()) && !BR.isValidCNPJ(objDto.getCpfOuCnpj())) {
-			errors.add(new FieldMessage("cpfOuCnpj", "CNPJ inválido"));
-		}
+		@SuppressWarnings("unchecked")
+		Map<String, String> map = (Map<String, String>) request.getAttribute(HandlerMapping.URI_TEMPLATE_VARIABLES_ATTRIBUTE);
+		Integer uriId =  Integer.parseInt(map.get("id"));
+		
+		List<FieldMessage> errors = new ArrayList<>();
 		
 		Cliente cliente = this.clienteRepository.findByEmail(objDto.getEmail());
 		
-		if (cliente != null) {
+		if (cliente != null && !cliente.getId().equals(uriId)) {
 			errors.add(new FieldMessage("email", "Email já cadastrado"));
 		}
 		
