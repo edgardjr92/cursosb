@@ -17,6 +17,7 @@ import javax.persistence.OneToOne;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
 
+import com.edgardjr.cursosb.dto.PedidoDTO;
 import com.fasterxml.jackson.annotation.JsonFormat;
 
 @Entity
@@ -56,6 +57,14 @@ public class Pedido implements Serializable, GenericDomain<Integer> {
 		this.cliente = cliente;
 		this.enderecoEntrega = enderecoEntrega;
 	}
+	
+	public Pedido(PedidoDTO pedidoDTO) {
+		this.cliente = pedidoDTO.getCliente();
+		this.enderecoEntrega = pedidoDTO.getEnderecoEntrega();
+		this.pagamento = pedidoDTO.getPagamento();
+		this.itens = pedidoDTO.getItens();
+	}
+	
 	
 	public double getValorTotal() {
 		return this.itens.stream().mapToDouble(ItemPedido::getSubTotal).sum();

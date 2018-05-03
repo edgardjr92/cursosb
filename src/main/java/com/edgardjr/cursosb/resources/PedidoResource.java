@@ -14,6 +14,7 @@ import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
 import com.edgardjr.cursosb.domain.Pedido;
+import com.edgardjr.cursosb.dto.PedidoDTO;
 import com.edgardjr.cursosb.services.PedidoService;
 
 @RestController
@@ -31,8 +32,8 @@ public class PedidoResource {
 	}
 	
 	@RequestMapping(method=RequestMethod.POST)
-	public ResponseEntity<Void> insert(@Valid @RequestBody Pedido pedido) {
-		pedido = this.pedidoService.save(pedido);
+	public ResponseEntity<Void> insert(@Valid @RequestBody PedidoDTO pedidoDTO) {
+		Pedido pedido = this.pedidoService.save(new Pedido(pedidoDTO));
 		URI uri = ServletUriComponentsBuilder.fromCurrentRequest()
 					.path("/{id}").buildAndExpand(pedido.getId()).toUri();
 		
