@@ -43,7 +43,7 @@ public class Pedido implements Serializable, GenericDomain<Integer> {
 	@JoinColumn(name="endereco_entrega_id")
 	private Endereco enderecoEntrega;
 	
-	@OneToMany(mappedBy="id.pedido")
+	@OneToMany(mappedBy="id.pedido", cascade = CascadeType.ALL)
 	private Set<ItemPedido> itens = new HashSet<>();
 	
 	public Pedido() {
@@ -56,7 +56,11 @@ public class Pedido implements Serializable, GenericDomain<Integer> {
 		this.cliente = cliente;
 		this.enderecoEntrega = enderecoEntrega;
 	}
-
+	
+	public double getValorTotal() {
+		return this.itens.stream().mapToDouble(ItemPedido::getSubTotal).sum();
+	}
+	
 	public Integer getId() {
 		return id;
 	}

@@ -31,6 +31,10 @@ public class ItemPedido implements Serializable, GenericDomain<ItemPedidoPK> {
 		this.quantidade = quantidade;
 		this.preco = preco;
 	}
+	
+	public double getSubTotal() {
+		return (this.preco - this.desconto) * this.quantidade;
+	}
 
 	public ItemPedidoPK getId() {
 		return id;
@@ -64,9 +68,17 @@ public class ItemPedido implements Serializable, GenericDomain<ItemPedidoPK> {
 		this.preco = preco;
 	}
 	
+	public void setPedido(Pedido pedido) {
+		this.id.setPedido(pedido);
+	}
+	
 	@JsonIgnore
 	public Pedido getPedido() {
 		return this.id.getPedido();	
+	}
+	
+	public void setProduto(Produto produto) {
+		this.id.setProduto(produto);
 	}
 	
 	public Produto getProduto() {
