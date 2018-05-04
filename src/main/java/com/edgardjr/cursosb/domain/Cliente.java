@@ -15,7 +15,7 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.OneToMany;
 
-import org.h2.util.StringUtils;
+import org.springframework.util.StringUtils;
 
 import com.edgardjr.cursosb.domain.enums.TipoCliente;
 import com.edgardjr.cursosb.dto.ClienteDTO;
@@ -68,11 +68,11 @@ public class Cliente implements Serializable, GenericDomain<Integer> {
 		this.getEnderecos().add(endereco);
 		this.getTelefones().add(clienteNewDTO.getTelefone1());
 		
-		if (!StringUtils.isNullOrEmpty(clienteNewDTO.getTelefone2())) {
+		if (!StringUtils.isEmpty(clienteNewDTO.getTelefone2())) {
 			this.getTelefones().add(clienteNewDTO.getTelefone2());
 		}
 		
-		if (!StringUtils.isNullOrEmpty(clienteNewDTO.getTelefone3())) {
+		if (!StringUtils.isEmpty(clienteNewDTO.getTelefone3())) {
 			this.getTelefones().add(clienteNewDTO.getTelefone3());
 		}
 	}
