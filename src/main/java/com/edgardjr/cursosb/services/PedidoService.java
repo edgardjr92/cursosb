@@ -24,6 +24,9 @@ public class PedidoService extends GenericServiceImpl<Pedido, Integer, PedidoRep
 	@Autowired
 	private ClienteService clienteService;
 	
+	@Autowired
+	private EmailService emailService;
+	
 	public PedidoService(JpaRepository<Pedido, Integer> repository) {
 		super(repository, Pedido.class);
 	}
@@ -49,7 +52,8 @@ public class PedidoService extends GenericServiceImpl<Pedido, Integer, PedidoRep
 		});
 		
 		Pedido pedidoNovo = super.save(pedido);
-		System.out.println(pedidoNovo);
+		
+		this.emailService.sendOrderConfirmationEmail(pedidoNovo);
 		
 		return pedidoNovo;
 	}
