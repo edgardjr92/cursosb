@@ -21,6 +21,9 @@ public class PedidoService extends GenericServiceImpl<Pedido, Integer, PedidoRep
 	@Autowired
 	private ProdutoService produtoService;
 	
+	@Autowired
+	private ClienteService clienteService;
+	
 	public PedidoService(JpaRepository<Pedido, Integer> repository) {
 		super(repository, Pedido.class);
 	}
@@ -29,6 +32,7 @@ public class PedidoService extends GenericServiceImpl<Pedido, Integer, PedidoRep
 	@Transactional
 	public Pedido save(Pedido pedido) {
 		pedido.setCreatedAt(new Date());
+		pedido.setCliente(this.clienteService.getById(pedido.getCliente().getId()));
 		pedido.getPagamento().setEstado(EstadoPagamento.PENDENTE);
 		pedido.getPagamento().setPedido(pedido);
 		
@@ -39,10 +43,14 @@ public class PedidoService extends GenericServiceImpl<Pedido, Integer, PedidoRep
 		
 		pedido.getItens().forEach(ip -> {
 			ip.setDesconto(0.0);
-			ip.setPreco(this.produtoService.getById(ip.getProduto().getId()).getPreco());
+			ip.setProduto(this.produtoService.getById(ip.getProduto().getId()));
+			ip.setPreco(ip.getProduto().getPreco());
 			ip.setPedido(pedido);
 		});
 		
-		return super.save(pedido);
+		Pedido pedidoNovo = super.save(pedido);
+		System.out.println(pedidoNovo);
+		
+		return pedidoNovo;
 	}
 }
