@@ -56,10 +56,7 @@ public class PedidoService extends GenericServiceImpl<Pedido, Integer, PedidoRep
 		});
 		
 		Pedido pedidoNovo = super.save(pedido);
-		
-		this.emailService.sendOrderConfirmationEmail(pedidoNovo);
-		
-		LOG.info("Teste Async");
+		this.emailService.sendOrderConfirmationHtmlEmail(pedidoNovo);
 		
 		return pedidoNovo;
 	}
