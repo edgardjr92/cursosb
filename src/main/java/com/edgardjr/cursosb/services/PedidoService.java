@@ -2,8 +2,6 @@ package com.edgardjr.cursosb.services;
 
 import java.util.Date;
 
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Service;
@@ -16,8 +14,6 @@ import com.edgardjr.cursosb.repostories.PedidoRepository;
 
 @Service
 public class PedidoService extends GenericServiceImpl<Pedido, Integer, PedidoRepository> {
-	
-	private static final Logger LOG = LoggerFactory.getLogger(PedidoService.class);
 	
 	@Autowired
 	private BoletoService boletoService;
