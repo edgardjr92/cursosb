@@ -4,6 +4,7 @@ import java.util.Date;
 
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.mail.SimpleMailMessage;
+import org.springframework.scheduling.annotation.Async;
 
 import com.edgardjr.cursosb.domain.Pedido;
 
@@ -13,6 +14,7 @@ public abstract class AbstractEmailService implements EmailService {
 	private String sender;
 	
 	@Override
+	@Async
 	public void sendOrderConfirmationEmail(Pedido pedido) {
 		SimpleMailMessage sm = prepareSimpleMailMessageFromPedido(pedido);
 		this.sendEmail(sm);
