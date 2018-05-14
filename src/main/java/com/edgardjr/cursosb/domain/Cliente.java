@@ -15,11 +15,8 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.OneToMany;
 
-import org.springframework.util.StringUtils;
-
 import com.edgardjr.cursosb.domain.enums.TipoCliente;
 import com.edgardjr.cursosb.dto.ClienteDTO;
-import com.edgardjr.cursosb.dto.ClienteNewDTO;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 
 @Entity
@@ -34,6 +31,9 @@ public class Cliente implements Serializable, GenericDomain<Integer> {
 	private String email;
 	private String cpfOuCnpj;
 	private Integer tipo;
+	
+	@JsonIgnore
+	private String senha;
 	
 	@OneToMany(mappedBy="cliente", cascade=CascadeType.ALL)
 	private List<Endereco> enderecos = new ArrayList<>();
@@ -55,35 +55,14 @@ public class Cliente implements Serializable, GenericDomain<Integer> {
 		this.email = clienteDTO.getEmail();
 	}
 	
-	public Cliente(ClienteNewDTO clienteNewDTO) {
-		this.nome = clienteNewDTO.getNome();
-		this.email = clienteNewDTO.getEmail();
-		this.cpfOuCnpj = clienteNewDTO.getCpfOuCnpj();
-		this.tipo = clienteNewDTO.getTipo();
-		
-		Endereco endereco = new Endereco(null, clienteNewDTO.getLogradouro(), clienteNewDTO.getNumero(), 
-				clienteNewDTO.getComplemento(), clienteNewDTO.getBairro(), clienteNewDTO.getCep(), 
-				this, new Cidade(clienteNewDTO.getCidadeId(), null, null));
-		
-		this.getEnderecos().add(endereco);
-		this.getTelefones().add(clienteNewDTO.getTelefone1());
-		
-		if (!StringUtils.isEmpty(clienteNewDTO.getTelefone2())) {
-			this.getTelefones().add(clienteNewDTO.getTelefone2());
-		}
-		
-		if (!StringUtils.isEmpty(clienteNewDTO.getTelefone3())) {
-			this.getTelefones().add(clienteNewDTO.getTelefone3());
-		}
-	}
-
-	public Cliente(Integer id, String nome, String email, String cpfOuCnpj, TipoCliente tipo) {
+	public Cliente(Integer id, String nome, String email, String cpfOuCnpj, TipoCliente tipo, String senha) {
 		super();
 		this.id = id;
 		this.nome = nome;
 		this.email = email;
 		this.cpfOuCnpj = cpfOuCnpj;
 		this.tipo = tipo.getCod();
+		this.senha = senha;
 	}
 
 	public Integer getId() {
@@ -148,6 +127,14 @@ public class Cliente implements Serializable, GenericDomain<Integer> {
 	
 	public void setPedidos(List<Pedido> pedidos) {
 		this.pedidos = pedidos;
+	}
+
+	public String getSenha() {
+		return senha;
+	}
+
+	public void setSenha(String senha) {
+		this.senha = senha;
 	}
 
 	@Override
