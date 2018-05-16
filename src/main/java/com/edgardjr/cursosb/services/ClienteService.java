@@ -24,6 +24,10 @@ public class ClienteService extends GenericServiceImpl<Cliente, Integer, Cliente
 		super(repository, Cliente.class);
 	}
 	
+	public Cliente getByEmail(String email) {
+		return ((ClienteRepository) this.getRepository()).findByEmail(email);
+	}
+	
 	public Cliente parse (ClienteNewDTO clienteNewDTO) {
 		Cliente cliente = new Cliente(null, clienteNewDTO.getNome(), clienteNewDTO.getEmail(), 
 				clienteNewDTO.getCpfOuCnpj(), TipoCliente.toEnum(clienteNewDTO.getTipo()), this.bCrypt.encode(clienteNewDTO.getSenha()));
