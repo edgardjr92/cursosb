@@ -1,16 +1,23 @@
 package com.edgardjr.cursosb.services;
 
 import java.util.Date;
+import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Sort.Direction;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import com.edgardjr.cursosb.domain.Cliente;
 import com.edgardjr.cursosb.domain.PagamentoBoleto;
 import com.edgardjr.cursosb.domain.Pedido;
 import com.edgardjr.cursosb.domain.enums.EstadoPagamento;
 import com.edgardjr.cursosb.repostories.PedidoRepository;
+import com.edgardjr.cursosb.security.UserSS;
+import com.edgardjr.cursosb.services.exceptions.AuthorizationException;
 
 @Service
 public class PedidoService extends GenericServiceImpl<Pedido, Integer, PedidoRepository> {
@@ -55,5 +62,18 @@ public class PedidoService extends GenericServiceImpl<Pedido, Integer, PedidoRep
 		this.emailService.sendOrderConfirmationHtmlEmail(pedidoNovo);
 		
 		return pedidoNovo;
+	}
+	
+	public Page<Pedido> getByCliente(Integer page, Integer size, String order, String direction) {
+		Optional<UserSS> userSS = UserService.authenticated();
+		
+		if (!userSS.isPresent()) {
+			throw new AuthorizationException("Acesso Negado");
+		}
+		
+		PageRequest pageRequest = PageRequest.of(page, size, Direction.valueOf(direction), order);
+		Cliente cliente = this.clienteService.getById(userSS.get().getId());
+		
+		return ((PedidoRepository) this.getRepository()).findByCliente(cliente, pageRequest);
 	}
 }
